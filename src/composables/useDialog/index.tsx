@@ -1,6 +1,6 @@
 import { h, getCurrentInstance } from "vue";
-import { mountComponent, usePopupState } from "../../utils/mount-component";
-import Interceptors from "../../utils/interceptors";
+import { mountComponent, usePopupState } from "@/utils/mount-component";
+import Interceptors from "@/utils/interceptors";
 import RootComponent from "./components/Dialog";
 import "./style.css";
 

@@ -1,5 +1,5 @@
 import { defineComponent, Transition, withDirectives, h } from "vue";
-import { scrollLocker } from "../../../utils/scroll-locker";
+import { scrollLocker } from "@/utils/scroll-locker";
 import { UseDialogOpenRes } from "../types";
 
 export default defineComponent({
