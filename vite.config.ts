@@ -17,7 +17,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "Vue3Composables",
-      fileName: (format) => `vue3-composables.${format}.js`,
+      fileName: (format) => `use.${format}.js`,
       formats: ["es", "umd"],
     },
     rollupOptions: {

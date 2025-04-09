@@ -61,7 +61,7 @@ import {
   useDebounce,
   useThrottle,
 } from "../src";
-import { useDialog } from "../dist/vue3-composables.es";
+import { useDialog } from "../dist/use.es";
 
 // 弹窗示例
 const dialog = useDialog();

@@ -5,9 +5,9 @@
 ## 安装
 
 ```bash
-npm install vue3-composables
+npm install use
 # 或
-yarn add vue3-composables
+yarn add use
 ```
 
 ## 使用
@@ -17,7 +17,7 @@ yarn add vue3-composables
 一个计数器组合式函数，支持增加、减少、设置值和重置。
 
 ```typescript
-import { useCounter } from 'vue3-composables'
+import { useCounter } from 'use'
 
 const { count, inc, dec, set, reset, isMin, isMax } = useCounter({
   initial: 0,
@@ -32,7 +32,7 @@ const { count, inc, dec, set, reset, isMin, isMax } = useCounter({
 一个用于本地存储的组合式函数，支持自动序列化和反序列化。
 
 ```typescript
-import { useLocalStorage } from 'vue3-composables'
+import { useLocalStorage } from 'use'
 
 const value = useLocalStorage({
   key: 'my-key',
@@ -45,7 +45,7 @@ const value = useLocalStorage({
 一个防抖组合式函数，用于延迟更新值。
 
 ```typescript
-import { useDebounce } from 'vue3-composables'
+import { useDebounce } from 'use'
 
 const searchQuery = ref('')
 const debouncedSearch = useDebounce(searchQuery, {
@@ -59,7 +59,7 @@ const debouncedSearch = useDebounce(searchQuery, {
 一个节流组合式函数，用于限制值的更新频率。
 
 ```typescript
-import { useThrottle } from 'vue3-composables'
+import { useThrottle } from 'use'
 
 const scrollPosition = ref(0)
 const throttledScroll = useThrottle(scrollPosition, {
@@ -86,4 +86,4 @@ npm run test
 
 ## 许可证
 
-MIT 
+MIT
