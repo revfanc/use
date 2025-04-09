@@ -113,7 +113,7 @@ const createScrollLocker = (): ScrollLocker => {
     lockCount++;
   };
 
-  const unlock = (el: HTMLElement): void => {
+  const unlock = (): void => {
     if (lockCount) {
       rootElements.pop();
       lockCount--;
