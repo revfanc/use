@@ -1,6 +1,6 @@
 import { defineComponent, Transition, withDirectives, h } from "vue";
 import { scrollLocker } from "@/utils/scroll-locker";
-import { UseDialogOpenRes } from "../types";
+import { UseDialogRes, UseDialogCallback, UseDialogRenderProps } from "../types";
 
 export default defineComponent({
   name: "DialogComponent",
@@ -13,18 +13,24 @@ export default defineComponent({
     overlayStyle: Object,
     zIndex: Number,
     beforeClose: Function,
+    callback: Function,
   },
-  emits: ["action", "closed"],
-  setup(props, { emit, attrs }) {
+  emits: ["closed"],
+  setup(props, context) {
+    const { emit, attrs } = context;
+
     const locker = {
       mounted: scrollLocker.lock,
       unmounted: scrollLocker.unlock,
     };
 
-    const onAction = (res: UseDialogOpenRes) => {
-      const close = (r?: UseDialogOpenRes) => {
+    const callback: UseDialogCallback = (res) => {
+      const close = (r?: UseDialogRes) => {
         const response = r ? r : res;
-        emit("action", response);
+
+        if (typeof props.callback === "function") {
+          props.callback(response);
+        }
       };
 
       if (typeof props.beforeClose === "function") {
@@ -35,6 +41,11 @@ export default defineComponent({
       close();
     };
 
+    const propsData: UseDialogRenderProps = {
+      ...attrs,
+      callback,
+    };
+
     const renderContent = () => {
       if (!props.render) {
         throw new Error(
@@ -43,10 +54,10 @@ export default defineComponent({
       }
 
       if (typeof props.render === "function") {
-        return props.render(h, { onAction });
+        return props.render(h, propsData);
       }
 
-      return h(props.render, { ...attrs, onAction });
+      return h(props.render, propsData);
     };
 
     return () => {
@@ -60,7 +71,7 @@ export default defineComponent({
                   class="dialog-overlay"
                   style={props.overlayStyle}
                   onClick={() =>
-                    props.closeOnClickOverlay && onAction({ action: "close" })
+                    props.closeOnClickOverlay && callback({ action: "overlay" })
                   }
                 />,
                 [[locker]]

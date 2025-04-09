@@ -10,4 +10,4 @@ export type { UseCounterOptions, UseCounterReturn } from './composables/useCount
 export type { UseLocalStorageOptions } from './composables/useLocalStorage'
 export type { UseDebounceOptions } from './composables/useDebounce'
 export type { UseThrottleOptions } from './composables/useThrottle'
-export type { UseDialogOpenOptions, UseDialogOpenRes } from './composables/useDialog/types'
+export type { UseDialogOptions, UseDialogRes } from './composables/useDialog/types'

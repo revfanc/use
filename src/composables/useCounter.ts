@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
 
 export interface UseCounterOptions {
   initial?: number
@@ -55,4 +56,4 @@ export function useCounter(options: UseCounterOptions = {}): UseCounterReturn {
     isMin,
     isMax
   }
-} 
+}

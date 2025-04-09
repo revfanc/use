@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, h } from "vue";
 import {
   useDialog,
   useCounter,
@@ -68,20 +68,21 @@ const dialog = useDialog();
 dialog.interceptors.before.use((config) => {
   console.log("before interceptors :>> ", config);
   return config;
-})
+});
 
 dialog.interceptors.after.use((config) => {
   console.log("after interceptors :>> ", config);
   return config;
-})
+});
 
 function openDialog() {
   dialog
     .open({
       params: { name: "world" },
       // render: HelloWorld,
-      render(h, { onAction }) {
-        return h("div", { style: { height: '200px', overflow: 'auto' } }, [
+      render(h, props) {
+        const { callback } = props
+        return h("div", { style: { height: "200px", overflow: "auto" } }, [
           h(
             "div",
             {
@@ -98,7 +99,7 @@ function openDialog() {
           h("button", { class: "btn", onClick: () => openDialog() }, "ok1"),
           h(
             "button",
-            { class: "btn", onClick: () => onAction({ action: "close" }) },
+            { class: "btn", onClick: () => callback({ action: "ok2" }) },
             "ok2"
           ),
         ]);

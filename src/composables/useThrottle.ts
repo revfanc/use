@@ -15,10 +15,10 @@ export function useThrottle<T>(value: T, options: UseThrottleOptions = {}) {
   let lastExecuted = 0
 
   watch(
-    value,
+    () => value,
     (newValue) => {
       const now = Date.now()
-      
+
       if (immediate) {
         throttledValue.value = newValue
       } else if (now - lastExecuted >= delay) {
@@ -29,4 +29,4 @@ export function useThrottle<T>(value: T, options: UseThrottleOptions = {}) {
   )
 
   return throttledValue
-} 
+}

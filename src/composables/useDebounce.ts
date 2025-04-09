@@ -16,10 +16,10 @@ export function useDebounce<T>(value: T, options: UseDebounceOptions = {}) {
   let timer: NodeJS.Timeout | null = null
 
   watch(
-    value,
+    () => value,
     (newValue) => {
       if (timer) clearTimeout(timer)
-      
+
       if (immediate) {
         debouncedValue.value = newValue
       } else {
@@ -31,4 +31,4 @@ export function useDebounce<T>(value: T, options: UseDebounceOptions = {}) {
   )
 
   return debouncedValue
-} 
+}

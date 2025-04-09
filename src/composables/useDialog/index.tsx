@@ -4,28 +4,26 @@ import Interceptors from "@/utils/interceptors";
 import RootComponent from "./components/Dialog";
 import "./style.css";
 
-import {
-  DialogWrapperInstance,
-  UseDialogOpenOptions,
-  UseDialogOpenRes,
-} from "./types";
+import { DialogWrapperInstance, UseDialogCallback, UseDialogOptions, UseDialogRes } from "./types";
 
-const INIT_OPTIONS: UseDialogOpenOptions = {
-  render: null,
+const INIT_OPTIONS: UseDialogOptions = {
+  render: undefined,
   position: "center",
   closeOnClickOverlay: false,
-  overlayStyle: null,
+  overlayStyle: undefined,
   zIndex: 9999,
-  beforeClose: null,
+  beforeClose: undefined,
 };
 
-let queue: any[] = [];
+let queue: DialogWrapperInstance[] = [];
 
-let currentOptions: UseDialogOpenOptions = Object.assign({}, INIT_OPTIONS);
+let currentOptions: UseDialogOptions = Object.assign({}, INIT_OPTIONS);
 
 const interceptors = new Interceptors();
 
-function createInstance(options: UseDialogOpenOptions & { resolve: any }) {
+function createInstance(
+  options: UseDialogOptions & { resolve: any }
+): DialogWrapperInstance {
   const { resolve, render: optionsRender, ...rest } = options;
 
   if (currentOptions.zIndex !== undefined) {
@@ -43,7 +41,7 @@ function createInstance(options: UseDialogOpenOptions & { resolve: any }) {
         unmount();
       };
 
-      const onAction = (res: UseDialogOpenRes) => {
+      const callback: UseDialogCallback = (res) => {
         toggle(false);
 
         if (currentOptions.zIndex !== undefined) {
@@ -52,15 +50,15 @@ function createInstance(options: UseDialogOpenOptions & { resolve: any }) {
 
         resolve({
           ...res,
-          options: rest,
+          __options__: rest,
         });
       };
 
       const render = () => {
         const attrs: Record<string, unknown> = {
           render: optionsRender,
+          callback,
           onClosed,
-          onAction,
         };
         return <RootComponent {...state} {...attrs} />;
       };
@@ -69,18 +67,18 @@ function createInstance(options: UseDialogOpenOptions & { resolve: any }) {
       (getCurrentInstance() as any).render = render;
 
       return {
-        onAction,
+        callback,
       };
     },
   });
 
-  queue.push(instance);
+  queue.push(instance as DialogWrapperInstance);
 
   return instance as DialogWrapperInstance;
 }
 
 function useDialog() {
-  const open = (options: UseDialogOpenOptions): Promise<UseDialogOpenRes> => {
+  const open = (opts: UseDialogOptions): Promise<UseDialogRes> => {
     return interceptors.execute((options) => {
       return new Promise((resolve, reject) => {
         try {
@@ -92,6 +90,15 @@ function useDialog() {
             throw new TypeError('The "render" property is required in options');
           }
 
+          if (
+            typeof options.render !== "function" &&
+            typeof options.render !== "object"
+          ) {
+            throw new TypeError(
+              'The "render" property must be a function or a VNode or a component'
+            );
+          }
+
           createInstance({
             ...currentOptions,
             ...options,
@@ -101,7 +108,7 @@ function useDialog() {
           reject(error);
         }
       });
-    }, options);
+    }, opts);
   };
 
   const close = (all?: boolean) => {
@@ -109,9 +116,9 @@ function useDialog() {
       return;
     }
     if (all) {
-      queue.forEach((item) => item.onAction({ action: "close" }));
+      queue.forEach((item) => item.callback({ action: "manual" }));
     } else {
-      queue[queue.length - 1].onAction({ action: "close" });
+      queue[queue.length - 1].callback({ action: "manual" });
     }
   };
 
@@ -119,7 +126,7 @@ function useDialog() {
     return queue;
   };
 
-  const setOptions = (options: Partial<UseDialogOpenOptions>): void => {
+  const setOptions = (options: Partial<UseDialogOptions>): void => {
     currentOptions = Object.assign({}, currentOptions, options);
   };
 
