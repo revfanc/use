@@ -55,12 +55,13 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import { ref, onMounted, onUnmounted, h } from "vue";
 import {
-  useDialog,
+  // useDialog,
   useCounter,
   useLocalStorage,
   useDebounce,
   useThrottle,
 } from "../src";
+import { useDialog } from "../dist/vue3-composables.es";
 
 // 弹窗示例
 const dialog = useDialog();
