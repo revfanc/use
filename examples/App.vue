@@ -26,14 +26,6 @@
     </section>
 
     <section class="demo-section">
-      <h2>useLocalStorage 示例</h2>
-      <div class="storage-demo">
-        <input v-model="localValue" placeholder="输入内容会自动保存" />
-        <p>已保存的值: {{ localValue }}</p>
-      </div>
-    </section>
-
-    <section class="demo-section">
       <h2>useDebounce 示例</h2>
       <div class="debounce-demo">
         <input v-model="searchQuery" placeholder="输入搜索内容" />
@@ -57,7 +49,6 @@ import { ref, onMounted, onUnmounted, h } from "vue";
 import {
   // useDialog,
   useCounter,
-  useLocalStorage,
   useDebounce,
   useThrottle,
 } from "../src";
@@ -117,12 +108,6 @@ const { count, inc, dec, reset, isMin, isMax } = useCounter({
   min: 0,
   max: 10,
   step: 1,
-});
-
-// useLocalStorage 示例
-const localValue = useLocalStorage({
-  key: "demo-input",
-  defaultValue: "",
 });
 
 // useDebounce 示例
