@@ -16,10 +16,7 @@ export interface UseDialogRenderProps {
 }
 
 export interface UseDialogRenderFunction {
-  (
-    h: typeof import("vue").h,
-    props?: UseDialogRenderProps
-  ): VNode;
+  (props?: UseDialogRenderProps): VNode;
 }
 
 export interface UseDialogOptions {

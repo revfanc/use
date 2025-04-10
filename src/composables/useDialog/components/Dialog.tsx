@@ -17,7 +17,7 @@ export default defineComponent({
   },
   emits: ["closed"],
   setup(props, context) {
-    const { emit, attrs } = context;
+    const { emit } = context;
 
     const locker = {
       mounted: scrollLocker.lock,
@@ -42,7 +42,7 @@ export default defineComponent({
     };
 
     const propsData: UseDialogRenderProps = {
-      ...attrs,
+      ...context,
       callback,
     };
 
@@ -54,7 +54,7 @@ export default defineComponent({
       }
 
       if (typeof props.render === "function") {
-        return props.render(h, propsData);
+        return props.render(propsData);
       }
 
       return h(props.render, propsData);
