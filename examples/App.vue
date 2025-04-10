@@ -10,22 +10,6 @@
         </div>
       </div>
     </section>
-
-    <section class="demo-section">
-      <h2>useDebounce 示例</h2>
-      <div class="debounce-demo">
-        <input v-model="searchQuery" placeholder="输入搜索内容" />
-        <p>防抖后的值: {{ debouncedSearch }}</p>
-      </div>
-    </section>
-
-    <section class="demo-section">
-      <h2>useThrottle 示例</h2>
-      <div class="throttle-demo">
-        <p>滚动位置: {{ scrollPosition }}</p>
-        <p>节流后的值: {{ throttledScroll }}</p>
-      </div>
-    </section>
   </div>
 </template>
 
@@ -33,11 +17,8 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import { ref, onMounted, onUnmounted, h } from "vue";
 import {
-  // useDialog,
-  useDebounce,
-  useThrottle,
+  useDialog,
 } from "../src";
-import { useDialog } from "../dist/use.es";
 
 // 弹窗示例
 const dialog = useDialog();
@@ -86,33 +67,6 @@ function openDialog() {
       console.log("open res :>> ", res);
     });
 }
-
-// useDebounce 示例
-const searchQuery = ref("");
-const debouncedSearch = useDebounce(searchQuery, {
-  delay: 500,
-  immediate: false,
-});
-
-// useThrottle 示例
-const scrollPosition = ref(0);
-const throttledScroll = useThrottle(scrollPosition, {
-  delay: 100,
-  immediate: false,
-});
-
-// 监听滚动事件
-const handleScroll = () => {
-  scrollPosition.value = window.scrollY;
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
 </script>
 
 <style scoped>

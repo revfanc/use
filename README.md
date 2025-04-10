@@ -30,34 +30,6 @@ dialog.open({
 })
 ```
 
-### useDebounce
-
-一个防抖组合式函数，用于延迟更新值。
-
-```typescript
-import { useDebounce } from 'use'
-
-const searchQuery = ref('')
-const debouncedSearch = useDebounce(searchQuery, {
-  delay: 300,
-  immediate: false
-})
-```
-
-### useThrottle
-
-一个节流组合式函数，用于限制值的更新频率。
-
-```typescript
-import { useThrottle } from 'use'
-
-const scrollPosition = ref(0)
-const throttledScroll = useThrottle(scrollPosition, {
-  delay: 100,
-  immediate: false
-})
-```
-
 ## 开发
 
 ```bash
