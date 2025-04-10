@@ -12,31 +12,21 @@ yarn add use
 
 ## 使用
 
-### useCounter
+### useDialog
 
-一个计数器组合式函数，支持增加、减少、设置值和重置。
-
-```typescript
-import { useCounter } from 'use'
-
-const { count, inc, dec, set, reset, isMin, isMax } = useCounter({
-  initial: 0,
-  min: 0,
-  max: 10,
-  step: 1
-})
-```
-
-### useLocalStorage
-
-一个用于本地存储的组合式函数，支持自动序列化和反序列化。
+一个对话框包装组合式函数，方便专注于对话框内容开发。
 
 ```typescript
-import { useLocalStorage } from 'use'
+import { useDialog } from 'use'
 
-const value = useLocalStorage({
-  key: 'my-key',
-  defaultValue: { name: 'John' }
+const dialog = useDialog()
+
+dialog.open({
+  render(h, context) {
+    return (
+      <div>我是弹窗内容</div>
+    )
+  }
 })
 ```
 

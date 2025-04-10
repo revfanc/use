@@ -12,20 +12,6 @@
     </section>
 
     <section class="demo-section">
-      <h2>useCounter 示例</h2>
-      <div class="counter-demo">
-        <p>当前计数: {{ count }}</p>
-        <div class="buttons">
-          <button @click="inc">增加</button>
-          <button @click="dec">减少</button>
-          <button @click="reset">重置</button>
-        </div>
-        <p>是否达到最小值: {{ isMin }}</p>
-        <p>是否达到最大值: {{ isMax }}</p>
-      </div>
-    </section>
-
-    <section class="demo-section">
       <h2>useDebounce 示例</h2>
       <div class="debounce-demo">
         <input v-model="searchQuery" placeholder="输入搜索内容" />
@@ -48,7 +34,6 @@ import HelloWorld from "./components/HelloWorld.vue";
 import { ref, onMounted, onUnmounted, h } from "vue";
 import {
   // useDialog,
-  useCounter,
   useDebounce,
   useThrottle,
 } from "../src";
@@ -101,14 +86,6 @@ function openDialog() {
       console.log("open res :>> ", res);
     });
 }
-
-// useCounter 示例
-const { count, inc, dec, reset, isMin, isMax } = useCounter({
-  initial: 0,
-  min: 0,
-  max: 10,
-  step: 1,
-});
 
 // useDebounce 示例
 const searchQuery = ref("");
