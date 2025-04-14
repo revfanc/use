@@ -5,9 +5,9 @@
 ## 安装
 
 ```bash
-npm install use
+npm install @revfanc/use
 # 或
-yarn add use
+yarn add @revfanc/use
 ```
 
 ## 使用
@@ -17,7 +17,7 @@ yarn add use
 一个对话框包装组合式函数，方便专注于对话框内容开发。
 
 ```typescript
-import { useDialog } from 'use'
+import { useDialog } from '@revfanc/use'
 
 const dialog = useDialog()
 
