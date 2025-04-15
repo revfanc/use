@@ -1,6 +1,10 @@
 import { defineComponent, Transition, withDirectives, h } from "vue";
 import { scrollLocker } from "@/utils/scroll-locker";
-import { UseDialogRes, UseDialogCallback, UseDialogRenderProps } from "../types";
+import {
+  UseDialogRes,
+  UseDialogCallback,
+  UseDialogRenderProps,
+} from "../types";
 
 export default defineComponent({
   name: "DialogComponent",
@@ -69,7 +73,7 @@ export default defineComponent({
               withDirectives(
                 <div
                   class="dialog-overlay"
-                  style={props.overlayStyle}
+                  style={{ zIndex: props.zIndex, ...props.overlayStyle }}
                   onClick={() =>
                     props.closeOnClickOverlay && callback({ action: "overlay" })
                   }
@@ -86,6 +90,7 @@ export default defineComponent({
                     "dialog-content",
                     `dialog-content--${props.position}`,
                   ]}
+                  style={{ zIndex: Number(props.zIndex) + 1 }}
                 >
                   {renderContent()}
                 </div>
