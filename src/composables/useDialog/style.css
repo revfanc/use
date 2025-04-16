@@ -29,8 +29,8 @@
   justify-content: center;
   flex-direction: column;
   pointer-events: auto;
-  max-height: 100vh;
-  overflow-y: auto;
+  /* max-height: 100vh;
+  overflow-y: auto; */
   -webkit-overflow-scrolling: touch;
 }
 
