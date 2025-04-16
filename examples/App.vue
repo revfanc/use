@@ -38,7 +38,7 @@ function openDialog() {
     .open({
       params: { name: "world" },
       // render: HelloWorld,
-      position: "bottom",
+      // position: "bottom",
       render(props) {
         const { callback } = props
         return h("div", { style: { height: "200px", overflow: "auto" } }, [

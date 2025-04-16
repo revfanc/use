@@ -67,7 +67,7 @@ export default defineComponent({
     return () => {
       return (
         <div class="revfanc-dialog-container" style={{ zIndex: props.zIndex }}>
-          <Transition name="fade" appear onAfterLeave={() => emit("closed")}>
+          <Transition name="revfanc-fade" appear onAfterLeave={() => emit("closed")}>
             {() =>
               props.show &&
               withDirectives(
@@ -82,7 +82,7 @@ export default defineComponent({
               )
             }
           </Transition>
-          <Transition name={props.position} appear>
+          <Transition name={`revfanc-${props.position}`} appear>
             {() =>
               props.show && (
                 <div
