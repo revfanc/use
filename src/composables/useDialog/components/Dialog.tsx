@@ -66,13 +66,13 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class="dialog-container" style={{ zIndex: props.zIndex }}>
+        <div class="revfanc-dialog-container" style={{ zIndex: props.zIndex }}>
           <Transition name="fade" appear onAfterLeave={() => emit("closed")}>
             {() =>
               props.show &&
               withDirectives(
                 <div
-                  class="dialog-overlay"
+                  class="revfanc-dialog-overlay"
                   style={{ zIndex: props.zIndex, ...props.overlayStyle }}
                   onClick={() =>
                     props.closeOnClickOverlay && callback({ action: "overlay" })
@@ -87,8 +87,8 @@ export default defineComponent({
               props.show && (
                 <div
                   class={[
-                    "dialog-content",
-                    `dialog-content--${props.position}`,
+                    "revfanc-dialog-content",
+                    `revfanc-dialog-content--${props.position}`,
                   ]}
                   style={{ zIndex: Number(props.zIndex) + 1 }}
                 >

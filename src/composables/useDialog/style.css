@@ -1,4 +1,4 @@
-.dialog-container {
+.revfanc-dialog-container {
   user-select: none;
   -webkit-user-select: none;
   position: fixed;
@@ -11,7 +11,7 @@
   pointer-events: none;
 }
 
-.dialog-overlay {
+.revfanc-dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +21,7 @@
   pointer-events: auto;
 }
 
-.dialog-content {
+.revfanc-dialog-content {
   position: fixed;
   transform-origin: center center;
   display: flex;
@@ -34,32 +34,32 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.dialog-content--center {
+.revfanc-dialog-content--center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.dialog-content--bottom {
+.revfanc-dialog-content--bottom {
   justify-content: flex-end;
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
 }
 
-.dialog-content--top {
+.revfanc-dialog-content--top {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
 }
 
-.dialog-content--right {
+.revfanc-dialog-content--right {
   top: 50%;
   right: 0;
   transform: translate(0, -50%);
 }
 
-.dialog-content--left {
+.revfanc-dialog-content--left {
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
