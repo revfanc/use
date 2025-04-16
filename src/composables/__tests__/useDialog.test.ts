@@ -35,15 +35,15 @@ describe('useDialog', () => {
 
     // 检查 DOM 中是否存在对话框
     expect(document.querySelector('.test-content')).toBeTruthy()
-    
+
     // 关闭对话框
     dialog.close()
-    
+
     // 等待 DOM 更新
     await nextTick()
     // 等待过渡动画完成
     vi.advanceTimersByTime(300)
-    
+
     // 验证对话框已关闭
     expect(document.querySelector('.test-content')).toBeFalsy()
   })
@@ -65,7 +65,7 @@ describe('useDialog', () => {
     await nextTick()
     vi.advanceTimersByTime(300)
 
-    expect(document.querySelector('.dialog-content--top')).toBeTruthy()
+    expect(document.querySelector('.revfanc-dialog-content--top')).toBeTruthy()
   })
 
   // 测试点击遮罩层关闭
@@ -86,12 +86,12 @@ describe('useDialog', () => {
     vi.advanceTimersByTime(300)
 
     // 模拟点击遮罩层
-    const overlay = document.querySelector('.dialog-overlay')
+    const overlay = document.querySelector('.revfanc-dialog-overlay')
     overlay?.dispatchEvent(new Event('click'))
-    
+
     await nextTick()
     vi.advanceTimersByTime(300)
-    
+
     expect(document.querySelector('.test-content')).toBeFalsy()
   })
 
@@ -123,7 +123,7 @@ describe('useDialog', () => {
     // 触发确认
     const button = document.querySelector('button')
     button?.click()
-    
+
     await nextTick()
     vi.advanceTimersByTime(300)
 
@@ -202,9 +202,9 @@ describe('useDialog', () => {
     await nextTick()
     vi.advanceTimersByTime(300)
 
-    expect(document.querySelector('.dialog-content--bottom')).toBeTruthy()
-    expect(document.querySelector('.dialog-container')?.getAttribute('style')).toContain('z-index: 1000')
-    expect(document.querySelector('.dialog-overlay')?.getAttribute('style')).toContain('background-color: red')
+    expect(document.querySelector('.revfanc-dialog-content--bottom')).toBeTruthy()
+    expect(document.querySelector('.revfanc-dialog-container')?.getAttribute('style')).toContain('z-index: 1000')
+    expect(document.querySelector('.revfanc-dialog-overlay')?.getAttribute('style')).toContain('background-color: red')
   })
 
   // 测试错误处理
@@ -215,8 +215,8 @@ describe('useDialog', () => {
     await expect(dialog.open({} as UseDialogOptions)).rejects.toThrow('The "render" property is required')
 
     // 测试无效的渲染函数
-    await expect(dialog.open({ 
-      render: 'not a function' as any 
+    await expect(dialog.open({
+      render: 'not a function' as any
     })).rejects.toThrow('The "render" property must be a function')
   })
-}) 
+})
