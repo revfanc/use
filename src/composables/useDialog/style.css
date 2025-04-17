@@ -22,47 +22,51 @@
 }
 
 .revfanc-dialog-content {
+  width: fit-content;
   position: fixed;
-  transform-origin: center center;
+  transform-origin: top center;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   pointer-events: auto;
-  /* max-height: 100vh;
-  overflow-y: auto; */
   -webkit-overflow-scrolling: touch;
 }
 
 .revfanc-dialog-content--center {
+  margin: 0 auto;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
 }
 
 .revfanc-dialog-content--bottom {
-  justify-content: flex-end;
+  margin: 0 auto;
   bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
+  left: 0;
+  right: 0;
 }
 
 .revfanc-dialog-content--top {
+  margin: 0 auto;
   top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
+  left: 0;
+  right: 0;
 }
 
 .revfanc-dialog-content--right {
-  top: 50%;
+  margin: 0 auto;
+  top: 0;
   right: 0;
-  transform: translate(0, -50%);
+  bottom: 0;
 }
 
 .revfanc-dialog-content--left {
-  top: 50%;
+  margin: 0 auto;
+  top: 0;
   left: 0;
-  transform: translate(0, -50%);
+  bottom: 0;
 }
 
 .revfanc-fade-enter-active,
@@ -83,7 +87,7 @@
 .revfanc-center-enter-from,
 .revfanc-center-leave-to {
   opacity: 0.1;
-  transform: translate(-50%, -50%) scale(0.7);
+  transform: scale(0.7) translateY(-50%);
 }
 
 .revfanc-bottom-enter-active,
@@ -94,7 +98,7 @@
 .revfanc-bottom-enter-from,
 .revfanc-bottom-leave-to {
   opacity: 0.1;
-  transform: translate(-50%, 100%);
+  transform: translateY(100%);
 }
 
 .revfanc-top-enter-active,
@@ -105,7 +109,7 @@
 .revfanc-top-enter-from,
 .revfanc-top-leave-to {
   opacity: 0.1;
-  transform: translate(-50%, -100%);
+  transform: translateY(-100%);
 }
 
 .revfanc-right-enter-active,
@@ -116,7 +120,7 @@
 .revfanc-right-enter-from,
 .revfanc-right-leave-to {
   opacity: 0.1;
-  transform: translate(100%, -50%);
+  transform: translateX(100%);
 }
 
 .revfanc-left-enter-active,
@@ -127,5 +131,5 @@
 .revfanc-left-enter-from,
 .revfanc-left-leave-to {
   opacity: 0.1;
-  transform: translate(-100%, -50%);
+  transform: translateX(-100%);
 }
