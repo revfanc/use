@@ -9,7 +9,7 @@
 }
 
 .revfanc-dialog-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -18,9 +18,8 @@
 }
 
 .revfanc-dialog-content {
-  width: fit-content;
-  position: fixed;
-  transform-origin: top center;
+  position: absolute;
+  transform-origin: center center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,11 +28,11 @@
 }
 
 .revfanc-dialog-content--center {
-  margin: 0 auto;
-  top: 50%;
+  margin: auto;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  transform: translateY(-50%);
 }
 
 .revfanc-dialog-content--bottom {
@@ -82,7 +81,7 @@
 .revfanc-center-enter-from,
 .revfanc-center-leave-to {
   opacity: 0.1;
-  transform: scale(0.7) translateY(-50%);
+  transform: scale(0.7);
 }
 
 .revfanc-bottom-enter-active,
