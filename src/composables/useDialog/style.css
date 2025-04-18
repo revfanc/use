@@ -8,7 +8,6 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 .revfanc-dialog-overlay {
@@ -18,7 +17,6 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  pointer-events: auto;
 }
 
 .revfanc-dialog-content {
@@ -29,7 +27,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  pointer-events: auto;
   /* -webkit-overflow-scrolling: touch; */
 }
 
