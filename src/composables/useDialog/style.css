@@ -52,14 +52,14 @@
 }
 
 .revfanc-dialog-content--right {
-  margin: 0 auto;
+  margin: auto 0 auto auto;
   top: 0;
   right: 0;
   bottom: 0;
 }
 
 .revfanc-dialog-content--left {
-  margin: 0 auto;
+  margin: auto auto auto 0;
   top: 0;
   left: 0;
   bottom: 0;
