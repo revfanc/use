@@ -18,6 +18,8 @@
 }
 
 .revfanc-dialog-content {
+  width: fit-content;
+  height: fit-content;
   position: absolute;
   transform-origin: center center;
   display: flex;
