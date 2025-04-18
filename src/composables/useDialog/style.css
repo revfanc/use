@@ -30,7 +30,7 @@
   justify-content: center;
   flex-direction: column;
   pointer-events: auto;
-  -webkit-overflow-scrolling: touch;
+  /* -webkit-overflow-scrolling: touch; */
 }
 
 .revfanc-dialog-content--center {
