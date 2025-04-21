@@ -11,7 +11,7 @@ const INIT_OPTIONS: UseDialogOptions = {
   position: "center",
   closeOnClickOverlay: false,
   overlayStyle: undefined,
-  zIndex: 9999,
+  zIndex: 999,
   beforeClose: undefined,
 };
 
@@ -27,7 +27,7 @@ function createInstance(
   const { resolve, render: optionsRender, ...rest } = options;
 
   if (currentOptions.zIndex !== undefined) {
-    currentOptions.zIndex += 10;
+    currentOptions.zIndex += 5;
   }
 
   const { instance, unmount } = mountComponent({
