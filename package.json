@@ -1,6 +1,6 @@
 {
   "name": "@revfanc/use",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A collection of Vue 3 Composition API utilities",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
