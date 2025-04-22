@@ -45,7 +45,7 @@ function createInstance(
         toggle(false);
 
         if (currentOptions.zIndex !== undefined) {
-          currentOptions.zIndex -= 10;
+          currentOptions.zIndex -= 5;
         }
 
         resolve({
