@@ -86,8 +86,9 @@ function createInstance(
 }
 
 function useDialog() {
-  const appContext = getCurrentInstance()?.appContext;
-  const open = (opts: UseDialogOptions): Promise<UseDialogRes> => {
+  let appContext = getCurrentInstance()?.appContext;
+
+  const open = (opts: UseDialogOptions, appCtx?: AppContext): Promise<UseDialogRes> => {
     return interceptors.execute((options) => {
       return new Promise((resolve, reject) => {
         try {
@@ -111,7 +112,7 @@ function useDialog() {
           createInstance({
             ...currentOptions,
             ...options,
-            appContext,
+            appContext: appCtx || appContext,
             resolve,
           });
         } catch (error) {

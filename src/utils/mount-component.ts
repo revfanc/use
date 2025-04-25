@@ -34,7 +34,10 @@ export function usePopupState() {
   };
 }
 
-export function mountComponent(RootComponent: Component, appContext?: AppContext) {
+export function mountComponent(
+  RootComponent: Component,
+  appContext?: AppContext
+) {
   const app = createApp(RootComponent);
 
   // Get the current instance's app context
@@ -50,7 +53,10 @@ export function mountComponent(RootComponent: Component, appContext?: AppContext
     instance: app.mount(root),
     unmount() {
       app.unmount();
-      document.body.removeChild(root);
+
+      if (document.body.contains(root)) {
+        document.body.removeChild(root);
+      }
     },
   };
 }
