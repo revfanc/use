@@ -1,10 +1,15 @@
-import { h, getCurrentInstance } from "vue";
+import { h, getCurrentInstance, AppContext } from "vue";
 import { mountComponent, usePopupState } from "@/utils/mount-component";
 import Interceptors from "@/utils/interceptors";
 import RootComponent from "./components/Dialog";
 import "./style.css";
 
-import { DialogWrapperInstance, UseDialogCallback, UseDialogOptions, UseDialogRes } from "./types";
+import {
+  DialogWrapperInstance,
+  UseDialogCallback,
+  UseDialogOptions,
+  UseDialogRes,
+} from "./types";
 
 const INIT_OPTIONS: UseDialogOptions = {
   render: undefined,
@@ -22,55 +27,58 @@ let currentOptions: UseDialogOptions = Object.assign({}, INIT_OPTIONS);
 const interceptors = new Interceptors();
 
 function createInstance(
-  options: UseDialogOptions & { resolve: any }
+  options: UseDialogOptions & { resolve: any; appContext?: AppContext }
 ): DialogWrapperInstance {
-  const { resolve, render: optionsRender, ...rest } = options;
+  const { resolve, appContext, render: optionsRender, ...rest } = options;
 
   if (currentOptions.zIndex !== undefined) {
     currentOptions.zIndex += 5;
   }
 
-  const { instance, unmount } = mountComponent({
-    setup() {
-      const { state, toggle } = usePopupState();
+  const { instance, unmount } = mountComponent(
+    {
+      setup() {
+        const { state, toggle } = usePopupState();
 
-      Object.assign(state, rest);
+        Object.assign(state, rest);
 
-      const onClosed = () => {
-        queue = queue.filter((item) => item !== instance);
-        unmount();
-      };
-
-      const callback: UseDialogCallback = (res) => {
-        toggle(false);
-
-        if (currentOptions.zIndex !== undefined) {
-          currentOptions.zIndex -= 5;
-        }
-
-        resolve({
-          ...res,
-          __options__: rest,
-        });
-      };
-
-      const render = () => {
-        const attrs: Record<string, unknown> = {
-          render: optionsRender,
-          callback,
-          onClosed,
+        const onClosed = () => {
+          queue = queue.filter((item) => item !== instance);
+          unmount();
         };
-        return <RootComponent {...state} {...attrs} />;
-      };
 
-      // rewrite render function
-      (getCurrentInstance() as any).render = render;
+        const callback: UseDialogCallback = (res) => {
+          toggle(false);
 
-      return {
-        callback,
-      };
+          if (currentOptions.zIndex !== undefined) {
+            currentOptions.zIndex -= 5;
+          }
+
+          resolve({
+            ...res,
+            __options__: rest,
+          });
+        };
+
+        const render = () => {
+          const attrs: Record<string, unknown> = {
+            render: optionsRender,
+            callback,
+            onClosed,
+          };
+          return <RootComponent {...state} {...attrs} />;
+        };
+
+        // rewrite render function
+        (getCurrentInstance() as any).render = render;
+
+        return {
+          callback,
+        };
+      },
     },
-  });
+    appContext
+  );
 
   queue.push(instance as DialogWrapperInstance);
 
@@ -78,6 +86,7 @@ function createInstance(
 }
 
 function useDialog() {
+  const appContext = getCurrentInstance()?.appContext;
   const open = (opts: UseDialogOptions): Promise<UseDialogRes> => {
     return interceptors.execute((options) => {
       return new Promise((resolve, reject) => {
@@ -102,6 +111,7 @@ function useDialog() {
           createInstance({
             ...currentOptions,
             ...options,
+            appContext,
             resolve,
           });
         } catch (error) {

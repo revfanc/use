@@ -1,5 +1,5 @@
 import { createApp, reactive, getCurrentInstance } from "vue";
-import type { Component } from "vue";
+import type { AppContext, Component } from "vue";
 
 export function useExpose<T = Record<string, any>>(apis: T) {
   const instance = getCurrentInstance();
@@ -34,11 +34,16 @@ export function usePopupState() {
   };
 }
 
-export function mountComponent(RootComponent: Component) {
+export function mountComponent(RootComponent: Component, appContext?: AppContext) {
   const app = createApp(RootComponent);
 
-  const root = document.createElement("div");
+  // Get the current instance's app context
+  if (appContext) {
+    // Copy the app context from current instance to the new app
+    Object.assign(app._context, appContext);
+  }
 
+  const root = document.createElement("div");
   document.body.appendChild(root);
 
   return {
