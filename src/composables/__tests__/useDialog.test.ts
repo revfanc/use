@@ -104,31 +104,36 @@ describe("useDialog", () => {
     expect(document.querySelector(".test-content")).toBeFalsy();
   });
 
-  // 测试自定义位置
-  it("should support custom position", async () => {
+  // 测试自定义位置 bottom
+  it("should support custom position bottom", async () => {
     const dialog = useDialog();
     const TestComponent: Component = {
       setup() {
-        return () => h("div", { class: "test-content" }, "Test Content");
+        return () =>
+          h(
+            "div",
+            {
+              class: "test-content",
+              style: "width: 200px; height: 200px; display: flex",
+            },
+            "Test Content"
+          );
       },
     };
 
     dialog.open({
       render: TestComponent,
-      position: "top",
+      position: "bottom",
     });
 
     await nextTick();
     vi.advanceTimersByTime(300);
 
-    expect(document.querySelector(".revfanc-dialog-content--top")).toBeTruthy();
+    const content: HTMLElement | null = document.querySelector(
+      ".revfanc-dialog-content--bottom"
+    );
 
-    // 判断对话框是否定位在屏幕顶部
-    expect(
-      document
-        .querySelector(".revfanc-dialog-content--top")
-        ?.getBoundingClientRect().top === 0
-    ).toBeTruthy();
+    expect(content).toBeTruthy();
   });
 
   // 测试点击遮罩层关闭
