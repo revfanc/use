@@ -9,8 +9,6 @@ import {
 
 describe("useDialog", () => {
   beforeEach(() => {
-    // 清理 DOM
-    document.body.innerHTML = "";
     // 重置计时器
     vi.useFakeTimers();
   });
@@ -20,9 +18,11 @@ describe("useDialog", () => {
 
     const dialog = useDialog();
 
+    // 清除拦截器
     dialog.interceptors.before.clear();
     dialog.interceptors.after.clear();
 
+    // 关闭所有对话框
     dialog.close(true);
   });
 
@@ -173,7 +173,7 @@ describe("useDialog", () => {
           "button",
           {
             class: "btn1",
-            onClick: () => ctx.callback({ action: 'confirm' }),
+            onClick: () => ctx.callback({ action: "confirm" }),
           },
           "Confirm"
         ),
@@ -181,7 +181,7 @@ describe("useDialog", () => {
           "button",
           {
             class: "btn2",
-            onClick: () => ctx.callback({ action: 'cancel' }),
+            onClick: () => ctx.callback({ action: "cancel" }),
           },
           "Cancel"
         ),

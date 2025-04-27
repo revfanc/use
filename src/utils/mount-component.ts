@@ -54,9 +54,7 @@ export function mountComponent(
     unmount() {
       app.unmount();
 
-      if (document.body.contains(root)) {
-        document.body.removeChild(root);
-      }
+      document.body.removeChild(root);
     },
   };
 }
