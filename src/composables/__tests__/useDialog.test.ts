@@ -171,6 +171,7 @@ describe("useDialog", () => {
         close(params);
       }
     });
+    const resultMock = vi.fn();
 
     const TestComponent = (ctx: UseDialogRenderProps) => {
       return h("div", [
@@ -193,10 +194,12 @@ describe("useDialog", () => {
       ]);
     };
 
-    dialog.open({
-      render: TestComponent,
-      beforeClose: beforeCloseMock,
-    });
+    dialog
+      .open({
+        render: TestComponent,
+        beforeClose: beforeCloseMock,
+      })
+      .then(resultMock);
 
     await nextTick();
     vi.advanceTimersByTime(300);
@@ -211,7 +214,7 @@ describe("useDialog", () => {
     vi.advanceTimersByTime(300);
 
     expect(beforeCloseMock).toHaveBeenCalled();
-
+    expect(resultMock).not.toHaveBeenCalled();
     expect(document.querySelector(".btn2")).toBeTruthy();
 
     // 确认按钮点击
@@ -222,6 +225,8 @@ describe("useDialog", () => {
     vi.advanceTimersByTime(300);
 
     expect(beforeCloseMock).toHaveBeenCalled();
+    await nextTick();
+    expect(resultMock).toHaveBeenCalled();
     expect(document.querySelector(".btn1")).toBeFalsy();
   });
 
