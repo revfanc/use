@@ -22,7 +22,7 @@ import { useDialog } from '@revfanc/use'
 const dialog = useDialog()
 
 dialog.open({
-  render(h, context) {
+  render(context) {
     return (
       <div>我是弹窗内容</div>
     )
