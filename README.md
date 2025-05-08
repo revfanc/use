@@ -2,6 +2,10 @@
 
 一个实用的 Vue 3 组合式 API 工具库。
 
+## 详细文档
+
+https://revfanc.github.io/use/
+
 ## 安装
 
 ```bash
