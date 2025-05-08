@@ -44,5 +44,13 @@
     "vitest": "^3.1.1",
     "vue": "^3.3.0",
     "vue-tsc": "^2.2.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revfanc/use.git"
+  },
+  "bugs": {
+    "url": "https://github.com/revfanc/use/issues"
+  },
+  "homepage": "https://revfanc.github.io/use"
 }
