@@ -3,23 +3,23 @@ layout: home
 hero:
   name: "@revfanc/use"
   text: "Vue 3 Composables"
-  tagline: 简单、灵活、功能强大的组合式api解决方案
+  tagline: 简洁高效的 Vue 3 组合式 API 工具集
   actions:
     - theme: brand
-      text: 快速开始
+      text: 开始使用
       link: /guide/getting-started
     - theme: alt
-      text: 在 GitHub 上查看
+      text: GitHub
       link: https://github.com/revfanc/use
 
 features:
   - icon: 🚀
     title: 简单易用
-    details: 提供简单直观的 API，快速集成到您的项目中
+    details: 直观的 API 设计，轻松集成到项目中
   - icon: 🎨
-    title: 可定制性强
-    details: 支持自定义内容、样式和动画效果
+    title: 高度可定制
+    details: 灵活配置，满足多样化需求
   - icon: 🔒
-    title: 可靠性强
-    details: 内置滚动锁定，完善的类型支持
+    title: 类型安全
+    details: 完善的 TypeScript 类型支持，开发更可靠
 ---
