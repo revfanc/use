@@ -6,7 +6,8 @@ export default {
   head: [["link", { rel: "icon", href: "/use/favicon.svg" }]],
   themeConfig: {
     nav: [
-      { text: "API", link: "/composables/" },
+      { text: "guide", link: "/guide/" },
+      { text: "composables", link: "/composables/" },
       { text: "GitHub", link: "https://github.com/revfanc/use" },
     ],
     sidebar: {
@@ -14,8 +15,8 @@ export default {
         {
           text: "guide",
           items: [
-            { text: "getting started", link: "/guide/" },
-            { text: "getting started", link: "/guide/getting-started" },
+            { text: "使用指南", link: "/guide/" },
+            { text: "快速开始", link: "/guide/getting-started" },
           ],
         },
       ],
@@ -23,8 +24,8 @@ export default {
         {
           text: "composables",
           items: [
-            { text: "functional dialog", link: "/composables/" },
-            { text: "functional dialog", link: "/composables/dialog" },
+            { text: "intro", link: "/composables/" },
+            { text: "useDialog", link: "/composables/dialog" },
           ],
         },
       ],
