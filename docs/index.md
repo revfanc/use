@@ -4,9 +4,12 @@ hero:
   name: "@revfanc/use"
   text: "Vue 3 Composables"
   tagline: 简洁高效的 Vue 3 组合式 API 工具集
+  image:
+    src: /favicon.svg
+    alt: "@revfanc/use"
   actions:
     - theme: brand
-      text: 开始使用
+      text: 快速开始
       link: /guide/getting-started
     - theme: alt
       text: GitHub
