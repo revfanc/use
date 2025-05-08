@@ -48,27 +48,34 @@ interface ScrollLocker {
 const createScrollLocker = (): ScrollLocker => {
   const rootElements: HTMLElement[] = [];
   let lockCount = 0;
+  let startX = 0;
   let startY = 0;
+  let deltaX = 0;
   let deltaY = 0;
   let direction = "";
 
   const resetTouchStatus = (): void => {
     direction = "";
+    deltaX = 0;
     deltaY = 0;
+    startX = 0;
     startY = 0;
   };
 
   const touchStart = (event: TouchEvent): void => {
     resetTouchStatus();
+    startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
   };
 
   const touchMove = (event: TouchEvent): void => {
     const touch = event.touches[0];
+
+    deltaX = touch.clientX - startX;
     deltaY = touch.clientY - startY;
 
     if (!direction) {
-      direction = Math.abs(deltaY) > 0 ? "vertical" : "";
+      direction = Math.abs(deltaX) < Math.abs(deltaY) ? "vertical" : "";
     }
   };
 
