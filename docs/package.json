@@ -1,0 +1,14 @@
+{
+  "name": "@revfanc/dialog-docs",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
+  },
+  "devDependencies": {
+    "vue": "^3.3.0",
+    "@vue/server-renderer": "^3.3.0",
+    "vitepress": "^1.5.0"
+  }
+} 

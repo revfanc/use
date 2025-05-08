@@ -33,12 +33,12 @@ jobs:
       - name: Build library
         run: npm run build
 
-      # - name: Build docs
-      #   working-directory: ./docs
-      #   run: |
-      #     rm -rf .vitepress/.temp .vitepress/cache .vitepress/dist || true
-      #     npm install
-      #     npm run build
+      - name: Build docs
+        working-directory: ./docs
+        run: |
+          rm -rf .vitepress/.temp .vitepress/cache .vitepress/dist || true
+          npm install
+          npm run build
 
       # 上传构建产物
       - name: Upload dist artifacts
@@ -47,19 +47,19 @@ jobs:
           name: dist
           path: dist/
 
-      # - name: Upload docs artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: docs
-      #     path: docs/.vitepress/dist/
+      - name: Upload docs artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: docs/.vitepress/dist/
 
-      # - name: Deploy to GitHub Pages
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: ./docs/.vitepress/dist
-      #     force_orphan: true
-      #     enable_jekyll: false
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/.vitepress/dist
+          force_orphan: true
+          enable_jekyll: false
 
   publish-npm:
     needs: test-and-build
