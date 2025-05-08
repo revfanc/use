@@ -1,3 +1,7 @@
+.revfanc-scroll-locker {
+  overflow: hidden;
+}
+
 .revfanc-dialog-container {
   position: fixed;
   top: 0;

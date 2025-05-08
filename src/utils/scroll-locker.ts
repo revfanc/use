@@ -1,6 +1,7 @@
 // 常量
 const DIRECTION_UP = "01";
 const DIRECTION_DOWN = "10";
+const LOCK_CLASS_NAME = "revfanc-scroll-locker";
 
 // 工具函数
 const preventDefault = (
@@ -107,7 +108,7 @@ const createScrollLocker = (): ScrollLocker => {
     document.addEventListener("touchmove", onTouchMove, { passive: false });
 
     if (!lockCount) {
-      document.body.style.overflow = "hidden";
+      document.body.classList.add(LOCK_CLASS_NAME);
     }
 
     lockCount++;
@@ -121,9 +122,8 @@ const createScrollLocker = (): ScrollLocker => {
       if (!lockCount) {
         document.removeEventListener("touchstart", touchStart);
         document.removeEventListener("touchmove", onTouchMove);
-        document.body.style.overflow = "";
-        document.body.style.getPropertyValue("overflow") === "hidden" &&
-          document.body.style.setProperty("overflow", "", "important");
+
+        document.body.classList.remove(LOCK_CLASS_NAME);
       }
     }
   };
