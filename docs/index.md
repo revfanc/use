@@ -7,6 +7,7 @@ hero:
   image:
     src: /favicon.svg
     alt: "@revfanc/use"
+    width: 200
   actions:
     - theme: brand
       text: 快速开始
