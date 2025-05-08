@@ -13,13 +13,19 @@ export default {
       "/guide/": [
         {
           text: "guide",
-          items: [{ text: "getting started", link: "/guide/getting-started" }],
+          items: [
+            { text: "getting started", link: "/guide/" },
+            { text: "getting started", link: "/guide/getting-started" },
+          ],
         },
       ],
       "/composables/": [
         {
-          text: "API",
-          items: [{ text: "functional dialog", link: "/composables/dialog" }],
+          text: "composables",
+          items: [
+            { text: "functional dialog", link: "/composables/" },
+            { text: "functional dialog", link: "/composables/dialog" },
+          ],
         },
       ],
     },
