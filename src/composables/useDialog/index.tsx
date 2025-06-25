@@ -1,7 +1,6 @@
 import { h, getCurrentInstance, AppContext } from "vue";
 import { mountComponent, usePopupState } from "@/utils/mount-component";
 import Interceptors from "@/utils/interceptors";
-import { once } from "@/utils"
 import RootComponent from "./components/Dialog";
 import "./style.css";
 
@@ -48,7 +47,7 @@ function createInstance(
           unmount();
         };
 
-        const callback: UseDialogCallback = once(function (res: UseDialogRes) {
+        const callback: UseDialogCallback = (res) => {
           toggle(false);
 
           if (currentOptions.zIndex !== undefined) {
@@ -59,7 +58,7 @@ function createInstance(
             ...res,
             __options__: rest,
           });
-        });
+        };
 
         const render = () => {
           const attrs: Record<string, unknown> = {
