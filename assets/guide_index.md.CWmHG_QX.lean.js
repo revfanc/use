@@ -1,0 +1,1 @@
+import{_ as a,c as t,o as r,ae as i}from"./chunks/framework.BLj7TQCG.js";const h=JSON.parse('{"title":"使用指南","description":"","frontmatter":{},"headers":[],"relativePath":"guide/index.md","filePath":"guide/index.md"}'),n={name:"guide/index.md"};function o(l,e,s,d,c,u){return r(),t("div",null,e[0]||(e[0]=[i("",8)]))}const p=a(n,[["render",o]]);export{h as __pageData,p as default};
