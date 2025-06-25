@@ -50,10 +50,6 @@ function createInstance(
         const callback: UseDialogCallback = (res) => {
           toggle(false);
 
-          if (currentOptions.zIndex !== undefined) {
-            currentOptions.zIndex -= 5;
-          }
-
           resolve({
             ...res,
             __options__: rest,
