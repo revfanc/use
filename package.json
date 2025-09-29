@@ -59,7 +59,7 @@
     "vue-tsc": "^2.2.8"
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run lint-staged --no-stash"
+    "pre-commit": "npx lint-staged --no-stash"
   },
   "lint-staged": {
     "*": "eslint"
