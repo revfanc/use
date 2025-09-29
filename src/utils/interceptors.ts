@@ -62,4 +62,4 @@ export default class Interceptors<T = any> {
 
     return promise
   }
-} 
+}

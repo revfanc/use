@@ -1,13 +1,13 @@
-import { defineComponent, Transition, withDirectives, h } from "vue";
-import { scrollLocker } from "@/utils/scroll-locker";
-import {
-  UseDialogRes,
+import type {
   UseDialogCallback,
   UseDialogRenderProps,
-} from "../types";
+  UseDialogRes,
+} from '../types'
+import { defineComponent, h, Transition, withDirectives } from 'vue'
+import { scrollLocker } from '@/utils/scroll-locker'
 
 export default defineComponent({
-  name: "DialogComponent",
+  name: 'DialogComponent',
   inheritAttrs: false,
   props: {
     show: Boolean,
@@ -19,86 +19,83 @@ export default defineComponent({
     beforeClose: Function,
     callback: Function,
   },
-  emits: ["closed"],
+  emits: ['closed'],
   setup(props, context) {
-    const { emit } = context;
+    const { emit } = context
 
     const locker = {
       mounted: scrollLocker.lock,
       unmounted: scrollLocker.unlock,
-    };
+    }
 
     const callback: UseDialogCallback = (res) => {
       const close = (r?: UseDialogRes) => {
-        const response = r ? r : res;
+        const response = r || res
 
-        if (typeof props.callback === "function") {
-          props.callback(response);
+        if (typeof props.callback === 'function') {
+          props.callback(response)
         }
-      };
-
-      if (typeof props.beforeClose === "function") {
-        props.beforeClose(close, res);
-        return;
       }
 
-      close();
-    };
+      if (typeof props.beforeClose === 'function') {
+        props.beforeClose(close, res)
+        return
+      }
+
+      close()
+    }
 
     const propsData: UseDialogRenderProps = {
       ...context,
       callback,
-    };
+    }
 
     const renderContent = () => {
       if (!props.render) {
         throw new Error(
-          'The "render" property is required and cannot be empty'
-        );
+          'The "render" property is required and cannot be empty',
+        )
       }
 
-      if (typeof props.render === "function") {
-        return props.render(propsData);
+      if (typeof props.render === 'function') {
+        return props.render(propsData)
       }
 
-      return h(props.render, propsData);
-    };
+      return h(props.render, propsData)
+    }
 
     return () => {
       return (
         <div class="revfanc-dialog-container" style={{ zIndex: props.zIndex }}>
-          <Transition name="revfanc-fade" appear onAfterLeave={() => emit("closed")}>
+          <Transition name="revfanc-fade" appear onAfterLeave={() => emit('closed')}>
             {() =>
-              props.show &&
-              withDirectives(
+              props.show
+              && withDirectives(
                 <div
                   class="revfanc-dialog-overlay"
                   style={{ zIndex: props.zIndex, ...props.overlayStyle }}
                   onClick={() =>
-                    props.closeOnClickOverlay && callback({ action: "overlay" })
-                  }
+                    props.closeOnClickOverlay && callback({ action: 'overlay' })}
                 />,
-                [[locker]]
-              )
-            }
+                [[locker]],
+              )}
           </Transition>
           <Transition name={`revfanc-${props.position}`} appear>
             {() =>
               props.show && (
                 <div
                   class={[
-                    "revfanc-dialog-content",
+                    'revfanc-dialog-content',
                     `revfanc-dialog-content--${props.position}`,
                   ]}
                   style={{ zIndex: Number(props.zIndex) + 1 }}
                 >
                   {renderContent()}
                 </div>
-              )
-            }
+              )}
           </Transition>
         </div>
-      );
-    };
+      )
+    }
   },
-});
+})

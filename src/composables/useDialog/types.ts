@@ -1,42 +1,42 @@
-import {
-  CSSProperties,
-  VNode,
-  ComponentPublicInstance,
-  FunctionalComponent,
+import type {
   Component,
-} from "vue";
+  ComponentPublicInstance,
+  CSSProperties,
+  FunctionalComponent,
+  VNode,
+} from 'vue'
 
 export interface UseDialogCallback {
-  (res: UseDialogRes): void;
+  (res: UseDialogRes): void
 }
 
 export interface UseDialogRenderProps {
-  callback: UseDialogCallback;
-  [key: string]: any;
+  callback: UseDialogCallback
+  [key: string]: any
 }
 
 export interface UseDialogRenderFunction {
-  (props?: UseDialogRenderProps): VNode;
+  (props?: UseDialogRenderProps): VNode
 }
 
 export interface UseDialogOptions {
-  render: UseDialogRenderFunction | FunctionalComponent | Component | undefined;
-  position?: "center" | "top" | "bottom" | "left" | "right";
-  zIndex?: number;
-  closeOnClickOverlay?: boolean;
-  overlayStyle?: CSSProperties;
-  beforeClose?: UseDialogBeforeClose;
-  [key: string]: any;
+  render: UseDialogRenderFunction | FunctionalComponent | Component | undefined
+  position?: 'center' | 'top' | 'bottom' | 'left' | 'right'
+  zIndex?: number
+  closeOnClickOverlay?: boolean
+  overlayStyle?: CSSProperties
+  beforeClose?: UseDialogBeforeClose
+  [key: string]: any
 }
 
 export interface UseDialogRes {
-  [key: string]: any;
+  [key: string]: any
 };
 
 export interface UseDialogBeforeClose {
-  (close: UseDialogCallback, params: UseDialogRes): void;
+  (close: UseDialogCallback, params: UseDialogRes): void
 }
 
 export type DialogWrapperInstance = ComponentPublicInstance<{
-  callback: UseDialogCallback;
-}>;
+  callback: UseDialogCallback
+}>
