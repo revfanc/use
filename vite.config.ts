@@ -1,11 +1,12 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import dts from 'vite-plugin-dts'
 
 export default defineConfig({
-  plugins: [vue(), dts(), cssInjectedByJsPlugin()],
+  plugins: [vue(), vueJsx(), dts(), cssInjectedByJsPlugin()],
 
   resolve: {
     alias: {
