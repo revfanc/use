@@ -26,6 +26,7 @@ export default {
           items: [
             { text: "intro", link: "/composables/" },
             { text: "useDialog", link: "/composables/dialog" },
+            { text: "useMountComponent", link: "/composables/mount-component" },
           ],
         },
       ],

@@ -7,27 +7,7 @@
 ### 界面交互
 
 - [useDialog](./dialog.md) - 创建和管理对话框
-<!-- - useToast - 显示轻量级通知提示
-- useLoading - 管理加载状态
-- useConfirm - 简化确认对话框流程
-
-### 状态管理
-
-- useState - 创建跨组件共享的响应式状态
-- useStorage - 持久化状态到本地存储
-- useContext - 提供依赖注入的上下文管理
-
-### DOM相关
-
-- useScroll - 滚动位置监听和控制
-- useResize - 元素大小调整监听
-- useIntersection - 元素可见性监测
-
-### 工具函数
-
-- useDebounce - 防抖函数
-- useThrottle - 节流函数
-- useCopy - 复制文本到剪贴板 -->
+- [useMountComponent](./mount-component.md) - 在任意位置挂载临时组件/内容
 
 ## 按需引入
 
