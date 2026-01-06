@@ -1,6 +1,6 @@
 {
   "name": "@revfanc/use",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A collection of Vue 3 Composition API utilities",
   "author": "revfanc",
   "license": "MIT",
