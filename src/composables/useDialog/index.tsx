@@ -5,8 +5,9 @@ import type {
   UseDialogOptions,
   UseDialogRes,
 } from './types'
+import type Interceptors from '@/utils/interceptors'
 import { getCurrentInstance } from 'vue'
-import Interceptors from '@/utils/interceptors'
+import InterceptorsClass from '@/utils/interceptors'
 import { mountComponent, usePopupState } from '@/utils/mount-component'
 import RootComponent from './components/Dialog'
 
@@ -25,11 +26,11 @@ let queue: DialogWrapperInstance[] = []
 
 let currentOptions: UseDialogOptions = Object.assign({}, INIT_OPTIONS)
 
-const interceptors = new Interceptors()
+const interceptors: Interceptors<UseDialogOptions> = new InterceptorsClass<UseDialogOptions>()
 
-function createInstance(
-  options: UseDialogOptions & { resolve: any, appContext?: AppContext },
-): DialogWrapperInstance {
+function createInstance<T = any>(
+  options: UseDialogOptions<T> & { resolve: (value: UseDialogRes<T>) => void, appContext?: AppContext },
+): DialogWrapperInstance<T> {
   const { resolve, appContext, render: optionsRender, ...rest } = options
 
   if (currentOptions.zIndex !== undefined) {
@@ -48,13 +49,13 @@ function createInstance(
           unmount()
         }
 
-        const callback: UseDialogCallback = (res) => {
+        const callback: UseDialogCallback<T> = (res) => {
           toggle(false)
 
           resolve({
             ...res,
             __options__: rest,
-          })
+          } as UseDialogRes<T>)
         }
 
         const render = () => {
@@ -77,17 +78,38 @@ function createInstance(
     appContext,
   )
 
-  queue.push(instance as DialogWrapperInstance)
+  queue.push(instance as DialogWrapperInstance<T>)
 
-  return instance as DialogWrapperInstance
+  return instance as DialogWrapperInstance<T>
 }
 
 function useDialog() {
   const appContext = getCurrentInstance()?.appContext
 
-  const open = (opts: UseDialogOptions, appCtx?: AppContext): Promise<UseDialogRes> => {
-    return interceptors.execute((options) => {
-      return new Promise((resolve, reject) => {
+  /**
+   * 打开 Dialog（带泛型类型支持）
+   * @template T - 回调返回的数据类型
+   * @param opts - Dialog 配置选项
+   * @param appCtx - 自定义的 App 上下文
+   * @returns Promise<UseDialogRes<T>> - Dialog 关闭时返回的结果
+   *
+   * @example
+   * // 不指定类型（向后兼容，结果类型为 any）
+   * const res = await dialog.open({ render: MyComponent })
+   *
+   * @example
+   * // 指定明确的返回类型
+   * interface Result { confirmed: boolean; data: string }
+   * const res = await dialog.open<Result>({ render: MyComponent })
+   * // res.confirmed 有类型提示
+   */
+  const open = <T = any>(
+    opts: UseDialogOptions<T>,
+    appCtx?: AppContext,
+  ): Promise<UseDialogRes<T>> => {
+    // 使用 any 来绕过拦截器的类型约束，因为我们返回的是对话框结果而不是选项
+    return ((interceptors.execute as any)((options: any) => {
+      return new Promise<UseDialogRes<T>>((resolve, reject) => {
         try {
           if (!options || typeof options !== 'object') {
             throw new TypeError('Options must be an object')
@@ -106,7 +128,7 @@ function useDialog() {
             )
           }
 
-          createInstance({
+          createInstance<T>({
             ...currentOptions,
             ...options,
             appContext: appCtx || appContext,
@@ -117,7 +139,7 @@ function useDialog() {
           reject(error)
         }
       })
-    }, opts)
+    }, opts))
   }
 
   const close = (all?: boolean) => {
@@ -125,10 +147,10 @@ function useDialog() {
       return
     }
     if (all) {
-      queue.forEach(item => item.callback({ action: 'manual' }))
+      queue.forEach(item => item.callback({ action: 'manual' } as any))
     }
     else {
-      queue[queue.length - 1].callback({ action: 'manual' })
+      queue[queue.length - 1].callback({ action: 'manual' } as any)
     }
   }
 
