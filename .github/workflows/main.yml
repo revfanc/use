@@ -39,6 +39,9 @@ jobs:
       - name: Build docs
         working-directory: ./docs
         run: |
+          # Avoid resolving the root Vite 6 esbuild binary while installing
+          # VitePress 1, which currently depends on a different esbuild version.
+          rm -rf ../node_modules
           rm -rf .vitepress/.temp .vitepress/cache .vitepress/dist || true
           npm ci
           npm run build
