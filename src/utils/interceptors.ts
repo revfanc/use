@@ -1,65 +1,58 @@
-interface InterceptorHandler<T = any> {
-  resolved: (value: T) => T | Promise<T>
-  rejected?: (error: any) => any
+export interface InterceptorHandler<T> {
+  resolved: (value: T) => T | Promise<T>;
+  rejected?: (error: any) => any;
 }
 
-class Interceptor<T = any> {
-  private interceptors: (InterceptorHandler<T> | null)[] = []
+export class Interceptor<T = any> {
+  private handlers: Array<InterceptorHandler<T> | null> = [];
 
-  use(resolved: (value: T) => T | Promise<T>, rejected?: (error: any) => any): number {
-    this.interceptors.push({
-      resolved,
-      rejected,
-    })
-    return this.interceptors.length - 1
+  use(
+    resolved: (value: T) => T | Promise<T>,
+    rejected?: (error: any) => any
+  ): number {
+    this.handlers.push({ resolved, rejected });
+    return this.handlers.length - 1;
   }
 
   forEach(fn: (interceptor: InterceptorHandler<T>) => void): void {
-    this.interceptors.forEach((interceptor) => {
-      if (interceptor !== null) {
-        fn(interceptor)
-      }
-    })
+    this.handlers.forEach((interceptor) => {
+      if (interceptor) fn(interceptor);
+    });
   }
 
   eject(id: number): void {
-    if (this.interceptors[id]) {
-      this.interceptors[id] = null
-    }
+    if (this.handlers[id]) this.handlers[id] = null;
   }
 
   clear(): void {
-    this.interceptors = []
+    this.handlers = [];
   }
 }
 
-export default class Interceptors<T = any> {
-  before: Interceptor<T>
-  after: Interceptor<T>
+export default class Interceptors<TBefore = any, TAfter = any> {
+  readonly before = new Interceptor<TBefore>();
+  readonly after = new Interceptor<TAfter>();
 
-  constructor() {
-    this.before = new Interceptor<T>()
-    this.after = new Interceptor<T>()
-  }
+  execute(
+    fn: (config: TBefore) => Promise<TAfter>,
+    config: TBefore
+  ): Promise<TAfter> {
+    const chain: Array<{
+      resolved: (value: any) => any;
+      rejected?: (error: any) => any;
+    }> = [{ resolved: fn }];
 
-  execute(fn: (config: T) => Promise<T>, config: T = {} as T): Promise<T> {
-    const chain: InterceptorHandler<T>[] = [{ resolved: fn, rejected: undefined }]
+    // Preserve the existing LIFO order for before interceptors.
+    this.before.forEach((interceptor) => chain.unshift(interceptor));
+    // Preserve the existing FIFO order for after interceptors.
+    this.after.forEach((interceptor) => chain.push(interceptor));
 
-    this.before.forEach((interceptor) => {
-      chain.unshift(interceptor)
-    })
-
-    this.after.forEach((interceptor) => {
-      chain.push(interceptor)
-    })
-
-    let promise = Promise.resolve(config)
-
+    let promise: Promise<any> = Promise.resolve(config);
     while (chain.length) {
-      const { resolved, rejected } = chain.shift()!
-      promise = promise.then(resolved, rejected)
+      const { resolved, rejected } = chain.shift()!;
+      promise = promise.then(resolved, rejected);
     }
 
-    return promise
+    return promise;
   }
-} 
+}

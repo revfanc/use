@@ -55,6 +55,50 @@ dialog.open({
 });
 ```
 
+### TypeScript 类型
+
+`useDialog` 支持为返回结果和透传 attrs 指定泛型。未指定泛型时与旧版本一致，允许任意结果字段。
+
+```ts
+import { h } from 'vue'
+
+type Result =
+  | { action: 'confirm'; value: string }
+  | { action: 'cancel' }
+
+interface Attrs {
+  params: { title: string }
+}
+
+const dialog = useDialog<Result, Attrs>()
+
+const result = await dialog.open({
+  params: { title: '提示' },
+  render(context) {
+    return h('button', {
+      onClick: () => context.callback({
+        action: 'confirm',
+        value: context.attrs.params.title
+      })
+    }, context.attrs.params.title)
+  }
+})
+```
+
+### 隔离的控制器
+
+为了兼容旧版本，多个 `useDialog()` 调用会继续共享全局配置、实例队列和拦截器。新代码如果需要隔离状态，可以使用 `createDialog()`：
+
+```ts
+import { createDialog } from '@revfanc/use'
+
+const dialog = createDialog({
+  position: 'bottom',
+  closeOnClickOverlay: true,
+  trapFocus: true
+})
+```
+
 #### options 参数
 
 | 参数名 | 类型 | 默认值 | 说明 |
@@ -65,6 +109,37 @@ dialog.open({
 | closeOnClickOverlay | boolean | false | 是否在点击遮罩层时关闭对话框 |
 | overlayStyle | CSSProperties | - | 自定义遮罩层样式 |
 | beforeClose | Function | - | 关闭前的拦截函数 |
+| trapFocus | boolean | true | 是否将键盘焦点限制在对话框内部 |
+| restoreFocus | boolean | true | 关闭后是否恢复到打开前的焦点元素 |
+| initialFocus | string \| HTMLElement \| Function | - | 初始聚焦目标，可以是对话框内选择器、元素或返回元素的函数 |
+| ariaLabel | string | - | 对话框的无障碍名称 |
+| ariaLabelledby | string | - | 提供对话框名称的元素 ID |
+| ariaDescribedby | string | - | 提供对话框描述的元素 ID |
+
+### 焦点管理
+
+开启 `trapFocus` 后，对话框会：
+
+- 优先聚焦 `initialFocus` 指定的目标；
+- 未指定时依次查找 `[autofocus]`、第一个可交互元素和对话框容器；
+- 使用 Tab 或 Shift+Tab 时让焦点在对话框内循环；
+- 关闭后默认将焦点恢复到打开对话框前的元素。
+
+```ts
+dialog.open({
+  trapFocus: true,
+  initialFocus: '.confirm-button',
+  ariaLabel: '删除确认',
+  render({ callback }) {
+    return h('button', {
+      class: 'confirm-button',
+      onClick: () => callback({ action: 'confirm' })
+    }, '确认删除')
+  }
+})
+```
+
+`trapFocus` 默认值为 `true`。如果某些特殊场景需要自行管理焦点，可以显式设置为 `false`。
 
 ### dialog.close(all?)
 

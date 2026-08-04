@@ -14,8 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import { ref, onMounted, onUnmounted, h } from "vue";
+import { h } from "vue";
 import {
   useDialog,
 } from "../src";

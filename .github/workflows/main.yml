@@ -28,7 +28,10 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --run
+
+      - name: Run lint
+        run: npm run lint:check
 
       - name: Build library
         run: npm run build
@@ -37,7 +40,7 @@ jobs:
         working-directory: ./docs
         run: |
           rm -rf .vitepress/.temp .vitepress/cache .vitepress/dist || true
-          npm install
+          npm ci
           npm run build
 
       # 上传构建产物

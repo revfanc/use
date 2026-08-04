@@ -5,7 +5,11 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { resolve } from "path";
 
 export default defineConfig({
-  plugins: [vue(), dts(), cssInjectedByJsPlugin()],
+  plugins: [
+    vue(),
+    dts({ exclude: ["src/**/__tests__/**"] }),
+    cssInjectedByJsPlugin(),
+  ],
 
   resolve: {
     alias: {

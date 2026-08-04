@@ -13,8 +13,10 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     coverage: {
-      provider: "v8", // or 'v8'
+      provider: "v8",
       reporter: ["text", "json", "html"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/__tests__/**", "src/**/*.d.ts"],
     },
   },
 });

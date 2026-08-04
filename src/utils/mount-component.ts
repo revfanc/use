@@ -1,60 +1,29 @@
-import { createApp, reactive, getCurrentInstance } from "vue";
-import type { AppContext, Component } from "vue";
-
-export function useExpose<T = Record<string, any>>(apis: T) {
-  const instance = getCurrentInstance();
-  if (instance) {
-    Object.assign(instance.proxy as object, apis);
-  }
-}
-
-export function usePopupState() {
-  const state = reactive<{
-    show: boolean;
-    [key: string]: any;
-  }>({
-    show: true,
-  });
-
-  const toggle = (show: boolean) => {
-    state.show = show;
-  };
-
-  const open = () => toggle(true);
-
-  const close = () => toggle(false);
-
-  useExpose({ open, close, toggle });
-
-  return {
-    state,
-    open,
-    close,
-    toggle,
-  };
-}
+import { createVNode, render } from "vue";
+import type { AppContext, Component, ComponentPublicInstance } from "vue";
 
 export function mountComponent(
   RootComponent: Component,
   appContext?: AppContext
 ) {
-  const app = createApp(RootComponent);
+  const container = document.createElement("div");
+  const vnode = createVNode(RootComponent);
 
-  // Get the current instance's app context
-  if (appContext) {
-    // Copy the app context from current instance to the new app
-    Object.assign(app._context, appContext);
+  if (appContext) vnode.appContext = appContext;
+  document.body.appendChild(container);
+
+  try {
+    render(vnode, container);
+  } catch (error) {
+    render(null, container);
+    container.remove();
+    throw error;
   }
 
-  const root = document.createElement("div");
-  document.body.appendChild(root);
-
   return {
-    instance: app.mount(root),
+    instance: vnode.component?.proxy as ComponentPublicInstance,
     unmount() {
-      app.unmount();
-
-      document.body.removeChild(root);
+      render(null, container);
+      container.remove();
     },
   };
 }
