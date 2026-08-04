@@ -10,5 +10,8 @@
     "vue": "^3.3.0",
     "@vue/server-renderer": "^3.3.0",
     "vitepress": "^1.5.0"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "0.21.5"
   }
-} 
+}
