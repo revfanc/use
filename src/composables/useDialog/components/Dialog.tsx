@@ -34,6 +34,7 @@ export default defineComponent({
     zIndex: Number,
     beforeClose: Function as PropType<UseDialogBeforeClose>,
     callback: Function as PropType<UseDialogCallback>,
+    beforeCloseError: Function as PropType<(error: unknown) => void>,
     trapFocus: Boolean,
     restoreFocus: Boolean,
     initialFocus: [String, Object, Function] as PropType<DialogInitialFocus>,
@@ -163,7 +164,12 @@ export default defineComponent({
       };
 
       if (props.beforeClose) {
-        void props.beforeClose(close, result);
+        try {
+          const pending = props.beforeClose(close, result);
+          if (pending) void pending.catch(props.beforeCloseError);
+        } catch (error) {
+          props.beforeCloseError?.(error);
+        }
         return;
       }
 

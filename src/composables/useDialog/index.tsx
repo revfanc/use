@@ -28,7 +28,7 @@ const INITIAL_OPTIONS: UseDialogOptions = {
 };
 
 interface DialogStore {
-  queue: DialogWrapperInstance[];
+  queue: InternalDialogWrapperInstance[];
   options: UseDialogOptions;
   interceptors: Interceptors<UseDialogOptions, UseDialogRes>;
 }
@@ -48,20 +48,33 @@ const globalStore = createDialogStore();
 
 interface InternalDialogOptions extends UseDialogOptions {
   resolve: (result: DialogResolvedResult) => void;
+  reject: (reason?: unknown) => void;
   appContext?: AppContext;
 }
+
+interface InternalDialogWrapperInstance extends DialogWrapperInstance {
+  disableFocusRestore(): void;
+}
+
+type DialogNoInfer<T> = [T][T extends any ? 0 : never];
 
 function createInstance(
   store: DialogStore,
   options: InternalDialogOptions
-): DialogWrapperInstance {
-  const { resolve, appContext, render: content, ...dialogOptions } = options;
+): InternalDialogWrapperInstance {
+  const {
+    resolve,
+    reject,
+    appContext,
+    render: content,
+    ...dialogOptions
+  } = options;
 
   // Keep the established z-index behavior for backwards compatibility.
   if (store.options.zIndex !== undefined) store.options.zIndex += 5;
 
   const mountedDialog: {
-    instance?: DialogWrapperInstance;
+    instance?: InternalDialogWrapperInstance;
     unmount?: () => void;
   } = {};
 
@@ -69,6 +82,7 @@ function createInstance(
     name: "DialogWrapper",
     setup() {
       const show = ref(true);
+      const restoreFocusEnabled = ref(dialogOptions.restoreFocus);
 
       const onClosed = () => {
         store.queue = store.queue.filter(
@@ -85,7 +99,23 @@ function createInstance(
         });
       };
 
-      return { show, callback, onClosed };
+      const onBeforeCloseError = (error: unknown) => {
+        show.value = false;
+        reject(error);
+      };
+
+      const disableFocusRestore = () => {
+        restoreFocusEnabled.value = false;
+      };
+
+      return {
+        show,
+        restoreFocusEnabled,
+        callback,
+        disableFocusRestore,
+        onBeforeCloseError,
+        onClosed,
+      };
     },
     render() {
       return h(RootComponent, {
@@ -93,13 +123,15 @@ function createInstance(
         show: this.show,
         render: content,
         callback: this.callback,
+        beforeCloseError: this.onBeforeCloseError,
+        restoreFocus: this.restoreFocusEnabled,
         onClosed: this.onClosed,
       });
     },
   });
 
   const mounted = mountComponent(Wrapper, appContext);
-  mountedDialog.instance = mounted.instance as DialogWrapperInstance;
+  mountedDialog.instance = mounted.instance as InternalDialogWrapperInstance;
   mountedDialog.unmount = mounted.unmount;
   store.queue.push(mountedDialog.instance);
 
@@ -151,6 +183,7 @@ function createDialogController<
               ...interceptedOptions,
               appContext: appContext || defaultAppContext,
               resolve,
+              reject,
             });
           } catch (error) {
             reject(error);
@@ -164,8 +197,12 @@ function createDialogController<
     if (!store.queue.length) return;
 
     if (all) {
-      // Copy the queue so transition callbacks cannot affect iteration.
-      [...store.queue].forEach((item) =>
+      const instances = [...store.queue];
+      // Vue flushes watchers in component creation order, regardless of the
+      // callback order. Only the oldest dialog should perform the final focus
+      // restoration when the whole stack closes.
+      instances.slice(1).forEach((item) => item.disableFocusRestore());
+      instances.reverse().forEach((item) =>
         item.callback({ action: "manual" })
       );
       return;
@@ -210,7 +247,10 @@ export function createDialog<
   TDefaultAttrs extends Record<string, any> = Record<string, any>,
 >(
   options: Partial<
-    UseDialogOpenOptions<NoInfer<TDefaultResult>, NoInfer<TDefaultAttrs>>
+    UseDialogOpenOptions<
+      DialogNoInfer<TDefaultResult>,
+      DialogNoInfer<TDefaultAttrs>
+    >
   > = {},
   appContext?: AppContext
 ): UseDialogController<TDefaultResult, TDefaultAttrs> {

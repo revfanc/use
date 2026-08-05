@@ -172,4 +172,54 @@ describe("useDialog compatibility", () => {
 
     trigger.remove();
   });
+
+  it("restores the original focus after closing stacked dialogs", async () => {
+    const trigger = document.createElement("button");
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    const dialog = createDialog();
+    const firstResult = dialog.open({
+      render: () => h("button", { class: "first-dialog" }, "first"),
+    });
+    await nextTick();
+    await nextTick();
+
+    const secondResult = dialog.open({
+      render: () => h("button", { class: "second-dialog" }, "second"),
+    });
+    await nextTick();
+    await nextTick();
+
+    dialog.close(true);
+    await Promise.all([firstResult, secondResult]);
+    await nextTick();
+
+    expect(document.activeElement).toBe(trigger);
+    trigger.remove();
+  });
+
+  it("rejects open when an async beforeClose hook fails", async () => {
+    const dialog = createDialog();
+    const resultPromise = dialog.open({
+      render: ({ callback }) =>
+        h(
+          "button",
+          { class: "close-dialog", onClick: () => callback({ action: "done" }) },
+          "close"
+        ),
+      beforeClose: async () => {
+        throw new Error("beforeClose failed");
+      },
+    });
+
+    await nextTick();
+    document.querySelector<HTMLElement>(".close-dialog")?.click();
+
+    await expect(resultPromise).rejects.toThrow("beforeClose failed");
+    await nextTick();
+    vi.runAllTimers();
+    await nextTick();
+    expect(document.querySelector(".close-dialog")).toBeNull();
+  });
 });
