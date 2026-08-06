@@ -33,6 +33,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.revfanc-dialog-content:focus {
+  outline: none;
+}
+
 .revfanc-dialog-content--center {
   margin: auto;
   top: 0;
